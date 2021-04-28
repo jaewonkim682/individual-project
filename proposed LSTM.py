@@ -58,7 +58,7 @@ x = scaler.fit_transform(x.reshape(-1,1)).reshape(x.shape)
 y = scaler.fit_transform(y.reshape(-1,1)).reshape(y.shape)
 z = scaler.fit_transform(z.reshape(-1,1)).reshape(z.shape)
 
-# x sampling
+# Separate x data into 30-second intervals
 duration_in_minutes = math.floor((len(x)/fs)/30)
 epoch_length = 1499 #time steps
 X = np.empty((time,epoch_length))
@@ -70,7 +70,7 @@ for i in range(time):
     X[i] = epoch
 
 
-# y sampling
+# Separate y data into 30-second intervals
 duration_in_minutes = math.floor((len(y)/fs)/30)
 Y = np.empty((time,epoch_length))
 Y[:]=np.nan
@@ -81,7 +81,7 @@ for i in range(time):
     Y[i] = epoch
 
 
-# z sampling
+# Separate z data into 30-second intervals
 duration_in_minutes = math.floor((len(z)/fs)/30)
 Z = np.empty((time,epoch_length))
 Z[:]=np.nan
