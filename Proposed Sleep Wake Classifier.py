@@ -25,7 +25,8 @@ def data_filter(data, cutoff, fs, order, ftype):
     return signal_filtered
   
  
-# Load acceleration and PSG data
+PSG_file = # Load PSG data
+acc_file = # Load acceleration data
 
 # Read the acceleration data
 fs = 50 #sampling frequency
