@@ -42,7 +42,7 @@ fs = 350 # Sample rate
 f = 1 # Frequency of the sine wave
 x = np.arange(fs) 
 
-# Assign the amplitude of each sine wave 
+# Assign the amplitude to each sine wave 
 y1 = np.sin(2*np.pi*(f*1)* (x/fs)) 
 y2 = np.sin(2*np.pi*(f*1)* (x/fs))*0.3
 y3 = np.sin(2*np.pi*(f*1)* (x/fs))*0.6
