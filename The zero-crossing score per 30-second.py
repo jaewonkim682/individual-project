@@ -1,0 +1,121 @@
+import math
+import pandas as pd
+import numpy as np
+from scipy.signal import butter, filtfilt
+import matplotlib
+import matplotlib.pyplot as plt
+matplotlib.rcParams['pdf.fonttype'] = 42 # for vecotr fonts in plots, imported code
+matplotlib.rcParams['ps.fonttype'] = 42 # for vecotr fonts in plots, imported code
+plt.close('all')
+import seaborn as sns # making statistical graphics, imported code
+sns.set()
+
+# Generate filter co-efficients, imported code
+def filter_coefficients(cutoff, fs, order, ftype):
+    nyq = 0.5 * fs
+    normal_cutoff = cutoff / nyq
+    b, a = butter(order, normal_cutoff, btype=ftype, analog=False)
+    return b, a
+
+# Filter data using filtfilt command, imported code
+def data_filter(data, cutoff, fs, order, ftype):
+    b, a = filter_coefficients(cutoff, fs, order, ftype)
+    signal_filtered = filtfilt(b, a, data)
+    return signal_filtered
+  
+PSG_file = # Load PSG data
+acc_file = # Load acceleration data
+
+# Read the acceleration data
+fs = 50 # Sampling frequency
+df = pd.read_csv(acc_file)
+acc = df.to_numpy()
+x = acc[:,1] 
+y = acc[:,2]
+z = acc[:,3] 
+ac = np.sqrt(x**2 + y**2 + z**2) - 1 
+
+# Generate lowpass filter, cutoff freqeucy is 20Hz, imported code
+order = 2
+cutoffs = np.array([20]) 
+a = data_filter(ac, cutoffs, fs, order, 'lowpass')
+
+# Count zero-crossings in each 30-second  
+duration_in_minutes = math.floor((len(a)/fs)/60)*2
+A = np.full(duration_in_minutes, np.nan)
+activity = np.full(duration_in_minutes, np.nan)
+for i in range(duration_in_minutes): 
+    e_start = i * 30 * fs
+    e_stop  = ((i+1) * 30 * fs) - 1
+    epoch = a[e_start:e_stop]
+    A[i] = sum(1 for i in range(1, len(epoch)) if epoch[i-1]*epoch[i]<0) 
+plt.plot(A)
+
+# Apply Cole-Kripke algorithm 
+D = np.full(duration_in_minutes, np.nan)    
+for k in range(4,duration_in_minutes-2):
+    D[k] = 0.00001 * (50*A[k-4] + 30*A[k-3] + 14*A[k-2] + 28*A[k-1] + 121*A[k] + 8*A[k+1] + 50*A[k+2])
+    
+# Threshold to determine sleep/wake of the acceleration data, imported code
+wake = np.full(duration_in_minutes, np.nan)
+with np.errstate(invalid='ignore'): 
+    wake[np.argwhere(D<1)] = False #sleep
+    wake[np.argwhere(D>=1)] = True #wake
+
+# Read the PSG data
+of = pd.read_csv(PSG_file)
+PSG = of.to_numpy()
+PSG_data = PSG[:,1]
+plt.plot(PSG_data)
+
+# Threshold to determine sleep/wake of the PSG data
+PSG1 = np.full(duration_in_minutes, np.nan)
+with np.errstate(invalid='ignore'): 
+    PSG1[np.argwhere(PSG_data<=0)] = True #wake
+    PSG1[np.argwhere(PSG_data>0)] = False #sleep
+    
+# Plot predictions and PSG 
+plt.plot(PSG1)
+plt.plot(wake)
+
+
+# Calculate the specificity 
+i = 0
+Correct_wake = 0
+Wrong_wake =0
+while i<len(PSG_data): 
+    if PSG1[i] == 1:
+        if wake[i] == PSG1[i]:
+            Correct_wake = Correct_wake + 1 
+        elif wake[i] != PSG1[i]:
+            Wrong_wake = Wrong_wake +1
+    i = i+1
+print(Correct_wake, Wrong_wake)
+print((Correct_wake/(Correct_wake+Wrong_wake))*100)
+
+# Calculate the sensitivity 
+i = 0
+Correct_sleep = 0
+Wrong_sleep =0
+while i<len(PSG_data): 
+    if PSG1[i] == 0:
+        if wake[i] == PSG1[i]:
+            Correct_sleep = Correct_sleep+1 
+        elif wake[i] != PSG1[i]:
+            Wrong_sleep = Wrong_sleep +1 
+    i = i+1
+print(Correct_sleep, Wrong_sleep)
+print((Correct_sleep/(Correct_sleep+Wrong_sleep))*100)
+
+# Calculate the overall accuracy
+i = 0
+Correct = 0
+Wrong =0
+while i<len(PSG_data): 
+    if wake[i] == PSG1[i]:
+        Correct = Correct+1
+    elif wake[i] != PSG1[i]:
+        Wrong = Wrong +1
+    i = i+1
+print(Correct, Wrong)
+print((Correct/(Correct+Wrong))*100)
