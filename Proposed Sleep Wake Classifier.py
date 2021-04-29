@@ -37,7 +37,7 @@ y = acc[:,2]
 z = acc[:,3] 
 ac = np.sqrt(x**2 + y**2 + z**2) - 1 
 
-# Generate lowpass filter data, cutoff freqeucy is 20Hz, imported code
+# Generate lowpass filter, cutoff freqeucy is 20Hz, imported code
 order = 2
 cutoffs = np.array([20]) 
 a = data_filter(ac, cutoffs, fs, order, 'lowpass')
