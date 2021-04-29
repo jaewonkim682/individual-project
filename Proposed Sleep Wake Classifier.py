@@ -41,7 +41,6 @@ ac = np.sqrt(x**2 + y**2 + z**2) - 1
 order = 2
 cutoffs = np.array([20]) 
 a = data_filter(ac, cutoffs, fs, order, 'lowpass')
-time = np.arange(0,(np.size(a)/fs),1/fs)
 
 # Calculate the max activity score in each 30-second  
 window = 2
