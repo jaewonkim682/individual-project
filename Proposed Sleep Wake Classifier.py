@@ -10,7 +10,6 @@ plt.close('all')
 import seaborn as sns # making statistical graphics, imported code
 sns.set()
 
-
 # Generate filter co-efficients, imported code
 def filter_coefficients(cutoff, fs, order, ftype):
     nyq = 0.5 * fs
@@ -24,7 +23,6 @@ def data_filter(data, cutoff, fs, order, ftype):
     signal_filtered = filtfilt(b, a, data)
     return signal_filtered
   
- 
 PSG_file = # Load PSG data
 acc_file = # Load acceleration data
 
@@ -118,7 +116,6 @@ while i<len(PSG_data):
     i = i+1
 print(Correct_sleep, Wrong_sleep)
 print((Correct_sleep/(Correct_sleep+Wrong_sleep))*100)
-
 
 # Calculate the overall accuracy
 i = 0
