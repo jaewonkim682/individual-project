@@ -27,7 +27,7 @@ def data_filter(data, cutoff, fs, order, ftype):
  
 # Load acceleration and PSG data
 
-#read acceleration data
+# Read the acceleration data
 fs = 50 #sampling frequency
 df = pd.read_csv(acc_file)
 acc = df.to_numpy()
@@ -62,33 +62,33 @@ for i in range(duration_in_30sec):
         activity[j] = sum(1 for i in range(1, len(epoch)) if epoch[i-1]*epoch[i]<0)
     A[i] = np.max(activity)
     
-# Apply Cole-Kripke algorithm 
+# Apply the Cole-Kripke algorithm 
 D = np.full(duration_in_30sec, np.nan)    
 for k in range(4,duration_in_30sec-2):
     D[k] = 0.0001 * (50*A[k-4] + 30*A[k-3] + 14*A[k-2] + 28*A[k-1] + 121*A[k] + 8*A[k+1] + 50*A[k+2])
     
-# Threshold to determine sleep/wake of acceleration data, imported code
+# Threshold to determine sleep/wake of the acceleration data, imported code
 wake = np.full(duration_in_30sec, np.nan)
 with np.errstate(invalid='ignore'): 
     wake[np.argwhere(D<1)] = False #sleep
     wake[np.argwhere(D>=1)] = True #wake
 
-# read PSG data   
+# Read the PSG data   
 of = pd.read_csv(PSG_file) 
 PSG = of.to_numpy()
 PSG_data = PSG[:,1]
 
-#Threshold to determine sleep/wake of PSG data
+# Threshold to determine sleep/wake of the PSG data
 PSG1 = np.full(duration_in_30sec, np.nan)
 with np.errstate(invalid='ignore'): 
     PSG1[np.argwhere(PSG_data<=0)] = True #wake
     PSG1[np.argwhere(PSG_data>0)] = False #sleep
     
-#plot predictions and PSG    
+# Plot predictions and PSG    
 plt.plot(PSG1)
 plt.plot(wake)
 
-#calculate specificity 
+# Calculate the specificity 
 i = 0
 Correct_wake = 0
 Wrong_wake =0
@@ -105,7 +105,7 @@ print(Correct_wake, Wrong_wake)
 print((Correct_wake/(Correct_wake+Wrong_wake))*100)
 print((Correct_wake/k)*100)
 
-#Calculate sensitivity 
+# Calculate the sensitivity 
 i = 0
 Correct_sleep = 0
 Wrong_sleep =0
@@ -120,7 +120,7 @@ print(Correct_sleep, Wrong_sleep)
 print((Correct_sleep/(Correct_sleep+Wrong_sleep))*100)
 
 
-#Calculate overall accuracy
+# Calculate the overall accuracy
 i = 0
 Correct = 0
 Wrong =0
