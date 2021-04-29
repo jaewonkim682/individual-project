@@ -29,7 +29,7 @@ PSG_file = # Load PSG data
 acc_file = # Load acceleration data
 
 # Read the acceleration data
-fs = 50 #sampling frequency
+fs = 50 # Sampling frequency
 df = pd.read_csv(acc_file)
 acc = df.to_numpy()
 x = acc[:,1] 
