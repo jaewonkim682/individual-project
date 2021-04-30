@@ -8,13 +8,13 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import confusion_matrix
 import matplotlib
 import matplotlib.pyplot as plt
-matplotlib.rcParams['pdf.fonttype'] = 42 # For vecotr fonts in plots, imported code
-matplotlib.rcParams['ps.fonttype'] = 42 # For vecotr fonts in plots, imported code
+matplotlib.rcParams['pdf.fonttype'] = 42 # For vecotr fonts in plots, imported code1
+matplotlib.rcParams['ps.fonttype'] = 42 # For vecotr fonts in plots, imported code1
 plt.close('all')
-import seaborn as sns # Make statistical graphics, imported code
+import seaborn as sns # Make statistical graphics, imported code1
 sns.set()
 
-# Function for plotting the confusion matrix, imported code
+# Function for plotting the confusion matrix, imported code2
 def plot_CM(true_labels, predictions, activities): 
     max_true = np.argmax(true_labels, axis = 1)
     max_prediction = np.argmax(predictions, axis = 1)
@@ -27,7 +27,7 @@ def plot_CM(true_labels, predictions, activities):
     plt.ylabel('True Label')
     plt.show()
     
-# Function for plotting accuracy and loss graphs, imported code
+# Function for plotting accuracy and loss graphs, imported code2
 def plot_graphs(history,metric):
     plt.plot(history.history[metric])
     plt.plot(history.history['val_'+metric],'')
@@ -104,22 +104,22 @@ for x in range(len(PSG_data)):
 xtrain_acc, xtest_acc, ytrain_acc, ytest_acc, ztrain_acc, ztest_acc, psg_train, psg_test = train_test_split(
  X, Y, Z, PSG_data, test_size=0.3,random_state=20, shuffle=True)
  
-# Generate train and test sets for LSTM, imported code
+# Generate train and test sets for LSTM, imported code2
 train_set = [xtrain_acc, ytrain_acc, ztrain_acc]
 train_set = np.array(np.dstack(train_set),dtype=np.float32)
 test_set = [xtest_acc, ytest_acc, ztest_acc]
 test_set = np.array(np.dstack(test_set),dtype = np.float32)
 
 
-# One-hot label encoding to the PSG data, imported code
+# One-hot label encoding to the PSG data, imported code2
 psg_train = tf.keras.utils.to_categorical(psg_train)
 psg_test = tf.keras.utils.to_categorical(psg_test)
 
 
 # Build LSTM Model
-time_steps = train_set.shape[1] # imported code
-features = train_set.shape[2] # imported code
-model = tf.keras.Sequential() # imported code
+time_steps = train_set.shape[1] # imported code2
+features = train_set.shape[2] # imported code2
+model = tf.keras.Sequential() # imported code2
 model.add(tf.keras.layers.LSTM(32, input_shape = (time_steps,features),return_sequences=True))
 model.add(tf.keras.layers.LSTM(32))
 model.add(tf.keras.layers.Dense(16, activation='relu'))
@@ -127,7 +127,7 @@ model.add(tf.keras.layers.BatchNormalization())
 model.add(tf.keras.layers.Dropout(0.3))
 model.add(tf.keras.layers.Dense(5, activation ='softmax'))
 
-# Optimizer and loss function, imported code except the learning rate
+# Optimizer and loss function, imported code2 except the learning rate
 model.compile(optimizer = tf.keras.optimizers.Adam(0.002), loss='categorical_crossentropy', metrics=['accuracy'])
 
 # Model training
@@ -138,16 +138,16 @@ history = model.fit(train_set, psg_train, epochs = 38, batch_size = 8,
 test_loss, test_acc = model.evaluate(test_set, psg_test, batch_size = 8)
 model.summary()
 
-# Plot accuracy and loss graphs, imported code
+# Plot accuracy and loss graphs, imported code2
 plot_graphs(history, 'accuracy')
 plot_graphs(history, 'loss')
 
-# Plot the confusion matrix of the test predictions, imported code
+# Plot the confusion matrix of the test predictions, imported code2
 predictions = model.predict(test_set)
 print(predictions.shape)
 print(psg_test.shape)
 Activities = ['Wake', '1', '2','3', '5'] # 1 is N1, 2 is N2, 3 is N3, and 5 is REM 
 plot_CM(psg_test,predictions, Activities)
 
-# Display the overall accuracy, imported code
+# Display the overall accuracy, imported code2
 print('\nTest accuracy: ', test_acc)
