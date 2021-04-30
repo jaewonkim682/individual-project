@@ -145,7 +145,7 @@ for k in range(4,duration_in_minutes-2):
     
 # Threshold to determine sleep/wake of the acceleration data, imported code1
 wake = np.full(duration_in_minutes, np.nan)
-with np.errstate(invalid='ignore'): # suppress np warning due to nans
+with np.errstate(invalid='ignore'): 
     wake[np.argwhere(D<1)] = False #sleep
     wake[np.argwhere(D>=1)] = True #wake
 
