@@ -31,7 +31,7 @@ def plot_CM(true_labels, predictions, activities):
 def plot_graphs(history,metric):
     plt.plot(history.history[metric])
     plt.plot(history.history['val_'+metric],'')
-    plt.title('Training and Validation '+metric.capitalize()) #uppercase metric?
+    plt.title('Training and Validation '+metric.capitalize()) 
     plt.xlabel("Epochs")
     plt.ylabel(metric)
     plt.legend([metric,'val_'+metric])
