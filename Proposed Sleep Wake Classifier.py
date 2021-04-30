@@ -4,20 +4,20 @@ import numpy as np
 from scipy.signal import butter, filtfilt
 import matplotlib
 import matplotlib.pyplot as plt
-matplotlib.rcParams['pdf.fonttype'] = 42 # for vecotr fonts in plots, imported code
-matplotlib.rcParams['ps.fonttype'] = 42 # for vecotr fonts in plots, imported code
+matplotlib.rcParams['pdf.fonttype'] = 42 # for vecotr fonts in plots, imported code1
+matplotlib.rcParams['ps.fonttype'] = 42 # for vecotr fonts in plots, imported code1
 plt.close('all')
-import seaborn as sns # making statistical graphics, imported code
+import seaborn as sns # making statistical graphics, imported code1
 sns.set()
 
-# Generate filter co-efficients, imported code
+# Generate filter co-efficients, imported code1
 def filter_coefficients(cutoff, fs, order, ftype):
     nyq = 0.5 * fs
     normal_cutoff = cutoff / nyq
     b, a = butter(order, normal_cutoff, btype=ftype, analog=False)
     return b, a
 
-# Filter data using filtfilt command, imported code
+# Filter data using filtfilt command, imported code1
 def data_filter(data, cutoff, fs, order, ftype):
     b, a = filter_coefficients(cutoff, fs, order, ftype)
     signal_filtered = filtfilt(b, a, data)
@@ -33,9 +33,9 @@ acc = df.to_numpy()
 x = acc[:,1] 
 y = acc[:,2]
 z = acc[:,3] 
-ac = np.sqrt(x**2 + y**2 + z**2) - 1 
+ac = np.sqrt(x**2 + y**2 + z**2) - 1 #imported code1
 
-# Generate lowpass filter, cutoff freqeucy is 20Hz, imported code
+# Generate lowpass filter, cutoff freqeucy is 20Hz, imported code1
 order = 2
 cutoffs = np.array([20]) 
 a = data_filter(ac, cutoffs, fs, order, 'lowpass')
@@ -65,7 +65,7 @@ D = np.full(duration_in_30sec, np.nan)
 for k in range(4,duration_in_30sec-2):
     D[k] = 0.0001 * (50*A[k-4] + 30*A[k-3] + 14*A[k-2] + 28*A[k-1] + 121*A[k] + 8*A[k+1] + 50*A[k+2])
     
-# Threshold to determine sleep/wake of the acceleration data, imported code
+# Threshold to determine sleep/wake of the acceleration data, imported code1
 wake = np.full(duration_in_30sec, np.nan)
 with np.errstate(invalid='ignore'): 
     wake[np.argwhere(D<1)] = False #sleep
@@ -76,7 +76,7 @@ of = pd.read_csv(PSG_file)
 PSG = of.to_numpy()
 PSG_data = PSG[:,1]
 
-# Threshold to determine sleep/wake of the PSG data
+# Threshold to determine sleep/wake of the PSG data, imported code1
 PSG1 = np.full(duration_in_30sec, np.nan)
 with np.errstate(invalid='ignore'): 
     PSG1[np.argwhere(PSG_data<=0)] = True #wake
