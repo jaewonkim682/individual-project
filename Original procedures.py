@@ -4,21 +4,21 @@ import numpy as np
 from scipy.signal import butter, filtfilt
 import matplotlib
 import matplotlib.pyplot as plt
-matplotlib.rcParams['pdf.fonttype'] = 42 # For vecotr fonts in plots, imported code
-matplotlib.rcParams['ps.fonttype'] = 42 # For vecotr fonts in plots, imported code
+matplotlib.rcParams['pdf.fonttype'] = 42 # For vecotr fonts in plots, imported code1
+matplotlib.rcParams['ps.fonttype'] = 42 # For vecotr fonts in plots, imported code1
 plt.close('all')
-import seaborn as sns # Make statistical graphics, imported code
+import seaborn as sns # Make statistical graphics, imported code1
 sns.set()
 
 
-# Generate filter co-efficients, imported code
+# Generate filter co-efficients, imported code1
 def filter_coefficients(cutoff, fs, order, ftype):
     nyq = 0.5 * fs
     normal_cutoff = cutoff / nyq
     b, a = butter(order, normal_cutoff, btype=ftype, analog=False)
     return b, a
 
-# Filter data using filtfilt command, imported code
+# Filter data using filtfilt command, imported code1
 def data_filter(data, cutoff, fs, order, ftype):
     b, a = filter_coefficients(cutoff, fs, order, ftype)
     signal_filtered = filtfilt(b, a, data)
@@ -45,7 +45,7 @@ y = np.interp(yvals, time, y)
 z = np.interp(zvals, time, z)
 ac = np.sqrt(x**2 + y**2 + z**2) - 1
 
-# Generate lowpass filter, cutoff freqeucy is 20Hz, imported code
+# Generate lowpass filter, cutoff freqeucy is 20Hz, imported code1
 order = 2
 cutoffs = np.array([20]) 
 a = data_filter(ac, cutoffs, fs, order, 'lowpass')
@@ -143,7 +143,7 @@ for k in range(4,duration_in_minutes-2):
     #D[k] = 0.00001 * (550*A[k-4] + 378*A[k-3] + 413*A[k-2] + 699*A[k-1] + 1736*A[k] + 287*A[k+1] + 309*A[k+2]) # For the maximum 10-second nonoverlapping epoch of each minute
 
     
-# Threshold to determine sleep/wake of the acceleration data, imported code
+# Threshold to determine sleep/wake of the acceleration data, imported code1
 wake = np.full(duration_in_minutes, np.nan)
 with np.errstate(invalid='ignore'): # suppress np warning due to nans
     wake[np.argwhere(D<1)] = False #sleep
@@ -162,7 +162,7 @@ for k in range(0,half):
        E[k] = PSG_data[k*2]
 plt.plot(E)
 
-# Threshold to determine sleep/wake of the PSG data, imported code
+# Threshold to determine sleep/wake of the PSG data, imported code1
 PSG1 = np.full(len(PSG_data), np.nan)
 with np.errstate(invalid='ignore'): # suppress np warning due to nans
     PSG1[np.argwhere(E<=0)] = True #wake
