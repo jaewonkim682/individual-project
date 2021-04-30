@@ -43,7 +43,7 @@ zvals = np.linspace(0, len(z)-1, len(z)*4)
 x = np.interp(xvals, time, x)
 y = np.interp(yvals, time, y)
 z = np.interp(zvals, time, z)
-ac = np.sqrt(x**2 + y**2 + z**2) - 1
+ac = np.sqrt(x**2 + y**2 + z**2) - 1 #imported code1
 
 # Generate lowpass filter, cutoff freqeucy is 20Hz, imported code1
 order = 2
